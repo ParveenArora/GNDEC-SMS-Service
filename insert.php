@@ -123,7 +123,7 @@ $sms_time = date("F j, Y, g:i a");
 </head>
 <body bgcolor="#CBD5E9">
 <p><h2>Thanks for using SMS Service.</h2></p>
-<h3>SMS sent to the following Persons:</h3>
+
 
 		
 
@@ -135,6 +135,20 @@ if (!$con)
   }
 
 mysql_select_db("adbook", $con);
+if(isset($_POST['schedule'])) {
+	echo "<h3>SMS Scheduled Successfully</h3>";
+	$event_name = date("FjYgia")."_".$_SESSION['username'];
+	$mobile = explode(",",$_POST['mobile']);
+	
+	mysql_query("SET GLOBAL event_scheduler=1") or die(mysql_error());
+	$i=0;
+	foreach($mobile as $mobi) {
+	mysql_query("CREATE EVENT ".$event_name.$i." ON SCHEDULE AT '".$_POST['datetime']."' DO INSERT INTO adbook.send_sms(sender,receiver,msgdata) VALUES ('".$by."','".$mobi."','".$_POST['msgdata']."')") or die(mysql_error());
+	$i +=1;
+}
+}
+else {
+echo "<h3>SMS sent to the following Persons:</h3>";
 $msgdata = mysql_real_escape_string($_POST[msgdata]);
 $numbers=explode(",",str_replace("-","",$_POST[receiver]));
 $count=0;
@@ -174,6 +188,7 @@ VALUES ('NA','".$number."','".$msgdata."','".$by."','".$sms_time."')");
 }
 mysql_close($con);
 echo "<br><h3>Total Number of Recipients : ".$count."</h3>"; 
+}
 ?>
 <br>
 <table>

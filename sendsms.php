@@ -48,6 +48,19 @@
 	// ** RETRIEVE CONTACT LIST BY GROUP **
 	$r_contact = $list->retrieve($_SESSION['username']);
 	$signature = strtoupper($_SESSION['username']);
+	echo "<link href='style.css' rel='stylesheet' type='text/css'>";
+echo "<link rel='stylesheet' media='all' type='text/css' href='css/ui-lightness/jquery-ui-1.8.11.custom.css' />";
+echo "<script type='text/javascript' src='jquery-1.5.min.js'></script>";
+echo "<script type='text/javascript' src='jquery_ui.js'></script>";
+echo "<script type='text/javascript' src='datetime.js'></script>";
+echo "<script>
+  $(document).ready(function(){
+    $('#dt').datetimepicker({dateFormat:'yy-mm-dd',
+		showSecond:true,
+		timeFormat: 'hh:mm:ss',
+		separator: ','});
+  });
+  </script>";
 ?>
 <HTML>
 <HEAD>
@@ -86,6 +99,21 @@ function limitText(limitField, limitCount, limitNum) {
         
         
 <?php
+if(isset($_POST['schedule'])) {
+	echo "<table><form action='insert.php' method='post'>";
+	echo "<tr><td></td><td>For multiple Numbers Use Comma(,) to separate</td></tr>";
+	echo "<tr><td>Enter Number</td><td><input type='text' name='mobile' /></td></tr>";
+	echo "<tr><td>Message</td><td><textarea name='msgdata' rows='10' cols='40' onKeyDown='limitText(this.form.msgdata,this.form.countdown,140)' 
+onKeyUp='limitText(this.form.limitedtextarea,this.form.countdown,140)'>
+</textarea></td></tr>
+<tr><td><font size='1'>(Maximum characters: 140)</td></td>
+<tr><td>You have</td><td><input readonly type='text' name='countdown' size='3' value='140'> characters left.</td></tr>";
+echo "<tr><td>Time</td><td><input type='text' name='datetime' id='dt' /></td></tr>";
+echo "<input type='hidden' name='schedule' id='sch' />";
+echo "<tr><td><input type='submit' value='Schedule'/></td></form>";
+echo "<td><form action='list.php' method='post'><input type='submit' value='Go Back'/></form></td></tr></table>";
+}
+else {
 $sql ="SELECT fullname FROM users WHERE username='".$_SESSION['username']."'";
 $sql2 ="SELECT mobile FROM users WHERE username='".$_SESSION['username']."'";
 $result = mysql_query($sql);
@@ -134,7 +162,8 @@ You have <input readonly type="text" name="countdown" size="3" value="140"> char
 <tr><td valign='top'>
 <input type="image" src="images/send_sms.png" />
 </form>
-</td><td valign='top'>
+</td>
+<td valign='top'>
 <form action="list.php" method="post">
 <input type="image" src="images/addressbook.png" />
 </form></td>
@@ -148,5 +177,4 @@ You have <input readonly type="text" name="countdown" size="3" value="140"> char
 <b><p style="color:#07260e">Note: Replies to this number are not monitored yet.</p>
 </body>
 </html>
-
-
+<?php } ?>

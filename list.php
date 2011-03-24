@@ -203,18 +203,17 @@
 					<TD CLASS="data" WIDTH=90><CENTER><?php echo($editLink); ?><IMG SRC="images/b-add.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_ADD']); ?></A></CENTER></TD>
 					<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_OPTIONS); ?>"><IMG SRC="images/b-options.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_OPTIONS']); ?></A></CENTER></TD>
 					<TD CLASS="data" WIDTH=90><CENTER><A HREF="sendsms.php"><IMG SRC="images/b-mail.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo "send SMS"; ?></A></CENTER></TD>
-				<!--	<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_MAILTO."?groupid=".$list->group_id); ?>"><IMG SRC="images/b-mail.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_MAILINGLIST']); ?></A></CENTER></TD> // --> 
-				</TR>
-				<TR VALIGN="middle" HEIGHT=90>
+				<!--	<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_MAILTO."?groupid=".$list->group_id); ?>"><IMG SRC="images/b-mail.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_MAILINGLIST']); ?></A></CENTER></TD> // -->
 				
-					<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_EXPORT); ?>"><IMG SRC="images/b-export.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_EXPORT']); ?></A></CENTER></TD>
+				
+					
+					<TD CLASS="data" WIDTH=90><CENTER><form action='sendsms.php' method='post'><input type='hidden' name='schedule' value='schedule'/><input type='image' src='images/b-mail.gif'/><br>Schedule SMS</br></form></CENTER></TD></TR>
 				<!--	<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_SCRATCHPAD); ?>"><IMG SRC="images/b-scratchpad.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_SCRATCHPAD']); ?></A></CENTER></TD> //-->
+				<TR VALIGN="middle" HEIGHT=90>
 					<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_USERS); ?>"><IMG SRC="images/b-users.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_MANAGEUSERS']); ?></A></CENTER></TD>
 					<TD CLASS="data" WIDTH=90><CENTER><A HREF="show_sent.php"><IMG SRC="images/b-mail.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo "Show History"; ?></A></CENTER></TD>
-				</TR>
-				<TR><TD>
 				<TD CLASS="data" WIDTH=90><CENTER><A HREF="get_report.php"><IMG SRC="images/b-export.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo "Get Report"; ?></A></CENTER></TD>
-				</TD></TR>					
+				<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_EXPORT); ?>"><IMG SRC="images/b-export.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo($lang['TOOLBOX_EXPORT']); ?></A></CENTER></TD></TR>					
 					
 				
 				</TABLE>
