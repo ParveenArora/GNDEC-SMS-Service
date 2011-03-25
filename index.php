@@ -175,7 +175,7 @@
 
 
 echo "<br><br><br><br><br>";
-	echo "<b>Developed By : <a href='http://harbhag.wordpress.com/harbhag' target='_blank'>Harbhag Singh Sohal</a></h3>";
+	echo "<b>Know The Developers : <a href='credits.html' target='_blank'>Credits</a></h3>";
 
 ?>
 </FORM><p>

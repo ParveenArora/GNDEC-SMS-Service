@@ -226,6 +226,7 @@
 					<TD CLASS="data" WIDTH=90><CENTER><?php echo($editLink); ?><IMG SRC="images/b-add.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo $lang[TOOLBOX_ADD] ?></A></CENTER></TD>
 					<TD CLASS="data" WIDTH=90><CENTER><A HREF="<?php echo(FILE_USERS); ?>"><IMG SRC="images/b-users.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo $lang[ LBL_USR_ACCT_SET] ?></A></CENTER></TD>
 					<TD CLASS="data" WIDTH=90><CENTER><A HREF="sendsms.php"><IMG SRC="images/b-mail.gif" WIDTH=50 HEIGHT=50 ALT="" BORDER=0><BR><?php echo "send SMS"; ?></A></CENTER></TD>
+					<TD CLASS="data" WIDTH=90><CENTER><form action='sendsms.php' method='post'><input type='hidden' name='schedule' value='schedule'/><input type='image' src='images/b-mail.gif'/><br>Schedule SMS</br></form></CENTER></TD></TR>
 					<TD CLASS="data" WIDTH=90>&nbsp;</TD>
 				</TR>
 				<TR VALIGN="middle" HEIGHT=90>
