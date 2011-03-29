@@ -52,7 +52,7 @@ echo "<table id='history'>
 
 	$conn = mysql_connect($db_hostname,$db_username,$db_password);
 			mysql_select_db("adbook", $conn);
-			$sql_users ="SELECT fullname, username, usertype FROM users";
+			$sql_users ="SELECT fullname, username, usertype FROM users ORDER BY fullname ASC";
 			$result_users = mysql_query($sql_users);
 			while($user = mysql_fetch_assoc($result_users)) {
 				$sql = "SELECT COUNT(*) FROM report WHERE sender = '".$user['username']."'";

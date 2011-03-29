@@ -48,9 +48,10 @@
 	// ** RETRIEVE CONTACT LIST BY GROUP **
 	$r_contact = $list->retrieve($_SESSION['username']);
 	$signature = strtoupper($_SESSION['username']);
-	echo "<link href='style.css' rel='stylesheet' type='text/css'>";
+	echo "<link href='styles.css' rel='stylesheet' type='text/css'>";
 echo "<link rel='stylesheet' media='all' type='text/css' href='css/ui-lightness/jquery-ui-1.8.11.custom.css' />";
 echo "<script type='text/javascript' src='jquery-1.5.min.js'></script>";
+echo "<script type='text/javascript' src='harbhag_predictive.js'></script>";
 echo "<script type='text/javascript' src='jquery_ui.js'></script>";
 echo "<script type='text/javascript' src='datetime.js'></script>";
 echo "<script>
@@ -102,7 +103,8 @@ function limitText(limitField, limitCount, limitNum) {
 if(isset($_POST['schedule'])) {
 	echo "<table><form action='insert.php' method='post'>";
 	echo "<tr><td></td><td>For multiple Numbers Use , to separate</td></tr>";
-	echo "<tr><td>Enter Number</td><td><input type='text' name='mobile' /></td></tr>";
+	echo "<tr><td>Enter Number</td><td><input type='text' name='mobile' id='search' onkeyup='searchSuggest()' /></td></tr>";
+	echo "<tr><td><div id='suggestions'></div></tr></td>";
 	echo "<tr><td>Message</td><td><textarea name='msgdata' rows='10' cols='40' onKeyDown='limitText(this.form.msgdata,this.form.countdown,140)' 
 onKeyUp='limitText(this.form.limitedtextarea,this.form.countdown,140)'>
 </textarea></td></tr>
@@ -129,7 +131,8 @@ if(isset($_POST['resend'])){
 
 <?php
 echo "<form action='insert.php' method='post'>";
-echo "Enter Number  <input type='text' name='receiver' value='".$nos."' />";
+echo "Enter Number  <input type='text' name='receiver' value='".$nos."' id='search' onkeyup='searchSuggest()' />";
+echo "<div id='suggestions'></div>";
 ?>
 <br>
 Enter Message
