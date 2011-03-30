@@ -42,9 +42,11 @@ function suggestOut(div_value) {
 }
  
 function setSearch(value) {
+	var ts = document.getElementById('search').value;
+	var tss = ts.replace(/[a-z]/g,'');
 	var test = value.split(',');
 	var f_val = test[1];
-	document.getElementById('search').value = f_val;
+	document.getElementById('search').value = tss+f_val+',';
 	document.getElementById('suggestions').innerHTML = '';
 }
 

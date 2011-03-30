@@ -102,7 +102,7 @@ function limitText(limitField, limitCount, limitNum) {
 <?php
 if(isset($_POST['schedule'])) {
 	echo "<table><form action='insert.php' method='post'>";
-	echo "<tr><td></td><td>For multiple Numbers Use , to separate</td></tr>";
+	echo "<tr><td></td><td>For multiple Numbers Use commas to separate</td></tr>";
 	echo "<tr><td>Enter Number</td><td><input type='text' name='mobile' id='search' onkeyup='searchSuggest()' /></td></tr>";
 	echo "<tr><td><div id='suggestions'></div></tr></td>";
 	echo "<tr><td>Message</td><td><textarea name='msgdata' rows='10' cols='40' onKeyDown='limitText(this.form.msgdata,this.form.countdown,140)' 

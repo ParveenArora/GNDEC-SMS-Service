@@ -143,8 +143,13 @@ if(isset($_POST['schedule'])) {
 	mysql_query("SET GLOBAL event_scheduler=1") or die(mysql_error());
 	$i=0;
 	foreach($mobile as $mobi) {
+		if($mobi=='') {
+			continue;
+		}
+		else{
 	mysql_query("CREATE EVENT ".$event_name.$i." ON SCHEDULE AT '".$_POST['datetime']."' DO INSERT INTO adbook.send_sms(sender,receiver,msgdata) VALUES ('".$by."','".$mobi."','".$_POST['msgdata']."')") or die(mysql_error());
 	$i +=1;
+}
 }
 }
 else {
