@@ -43,6 +43,9 @@ function suggestOut(div_value) {
  
 function setSearch(value) {
 	var ts = document.getElementById('search').value;
+	if(ts=='') {
+		document.getElementById('suggestions').innerHTML = '';
+	}
 	var tss = ts.replace(/[a-z]/g,'');
 	var test = value.split(',');
 	var f_val = test[1];
