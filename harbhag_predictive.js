@@ -23,7 +23,7 @@ function handleSearchSuggest() {
 		ss.innerHTML = '';
 		var str = searchReq.responseText.split("\n");
 		for(i=0; i < str.length - 1; i++) {
-			var suggest = '<div onmouseover="javascript:suggestOver(this);" ';
+			var suggest = '<div id="f" onmouseover="javascript:suggestOver(this);" ';
 			suggest += 'onmouseout="javascript:suggestOut(this);" ';
 			suggest += 'onclick="javascript:setSearch(this.innerHTML);" ';
 			suggest += 'class="suggest_link">' + str[i] + '</div>';
@@ -43,9 +43,6 @@ function suggestOut(div_value) {
  
 function setSearch(value) {
 	var ts = document.getElementById('search').value;
-	if(ts=='') {
-		document.getElementById('suggestions').innerHTML = '';
-	}
 	var tss = ts.replace(/[a-z]/g,'');
 	var test = value.split(',');
 	var f_val = test[1];
