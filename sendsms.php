@@ -112,7 +112,7 @@ onKeyUp='limitText(this.form.limitedtextarea,this.form.countdown,140)'>
 <tr><td>You have</td><td><input readonly type='text' name='countdown' size='3' value='140'> characters left.</td></tr>";
 echo "<tr><td>Time</td><td><input type='text' name='datetime' id='dt' /></td></tr>";
 echo "<input type='hidden' name='schedule' id='sch' />";
-echo "<tr><td><input type='submit' value='Schedule'/></td></form>";
+echo "<tr><td><input type='submit' value='Schedule' onclick='return validate_mobile(\"schedule\")' /></td></form>";
 echo "<td><form action='list.php' method='post'><input type='submit' value='Go Back'/></form></td></tr></table>";
 }
 else {
@@ -150,9 +150,8 @@ else
 {?>
 <textarea name="msgdata" rows="10" cols="40" onKeyDown="limitText(this.form.msgdata,this.form.countdown,140);" 
 onKeyUp="limitText(this.form.limitedtextarea,this.form.countdown,140);">---
-Sender  :- <?php echo $fullname[0]; ?>
-
-Mobile  :- <?php echo $mobileno[0]; ?>
+<?php echo $fullname[0]; ?>
+(<?php echo $mobileno[0]; ?>)
 </textarea><br>
 <font size="1">(Maximum characters: 140)<br>
 You have <input readonly type="text" name="countdown" size="3" value="140"> characters left.</font>
@@ -163,7 +162,7 @@ You have <input readonly type="text" name="countdown" size="3" value="140"> char
 <tr><td>
 <center><table>
 <tr><td valign='top'>
-<input type="image" src="images/send_sms.png" />
+<input type="image" src="images/send_sms.png" onclick='return validate_mobile("simple")' />
 </form>
 </td>
 <td valign='top'>

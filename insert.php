@@ -49,7 +49,7 @@
 	$r_contact = $list->retrieve($_SESSION['username']);
 	
                    
-$sms_time = date("F j, Y, g:i a");
+$sms_time = date('F j, Y, g:i a',time());
 //echo $sms_time;
 ?>
 <HTML>

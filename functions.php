@@ -9,7 +9,8 @@
  *
  *************************************************************/
 session_start();
-
+include_once('config.php');
+$conn = mysql_connect("localhost",$db_username,$db_password);
 function chronometer($msg) {
 global $elapsed;
 global $CHRONO_STARTTIME;
@@ -361,6 +362,18 @@ If necessary, please press the BACK button on your browser to return to the prev
 }
 // end
 
+function fetch_received() {
+	echo "<table id='history' align='center' border='1px'>";
+	mysql_select_db("adbook",$conn);
+	$sql = mysql_query("SELECT sql_id,sender,msgdata,time FROM sent_sms WHERE momt='MO' order BY sent_sms.sql_id DESC") or die(mysql_error());
+	echo "<tr><th>Sender</th><th>Message</th><th>Time</th></tr>";
+	while($row = mysql_fetch_assoc($sql)) {
+		$time = date('F j, Y, g:i a',$row['time']);
+		echo "<tr><td>".$row['sender']."</td>";
+		echo "<td>".$row['msgdata']."</td>";
+		echo "<td>".$time."</td></tr>";
+	}
+}
 
 // END OF FILE
 ?>

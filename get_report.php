@@ -37,11 +37,14 @@
 	$r_contact = $list->retrieve($_SESSION['username']);
 
     $username = $_SESSION['username'];
+$mode = $_GET['mode'];
+
+
 echo "<center><IMG SRC='images/title.png' WIDTH=570 HEIGHT=90 ALT='' BORDER=0></IMG></center>";
 echo "<center><form action='list.php' method='get'>
 	<input type='submit' value='Go Back' />
 	</form></center>";
-
+if($mode=='get_report') {
 echo "<table id='history'>
 					<tr>
 			<th>Full Name</th>
@@ -69,12 +72,15 @@ echo "<table id='history'>
   }
 }
 echo "</table>";
-?>
-
-<html>
+}
+elseif($mode='show_received') {
+	fetch_received();
+	/*echo "<html>
 <head>
-<title>Sent Messages</title>
+<title>Sent/Received Messages</title>
 	</head>
 	<body><center><form action='list.php' method='get'>
 	<input type='submit' value='Go Back' />
-	</form></center></body></html>
+	</form></center></body></html>";*/
+}
+?>
