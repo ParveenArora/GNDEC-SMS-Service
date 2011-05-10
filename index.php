@@ -14,9 +14,17 @@
 	require_once('constants.inc');
 	require_once(FILE_FUNCTIONS);
 	require_once(FILE_CLASS_OPTIONS);
+	require_once('classes.php');
 
 // ** START SESSION **
 	session_start();
+	$datetimenow = date("y-m-d H:i:s");
+	$alphabets = array('a','b','c','d','e','f','g','h','i','j','k','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+for($i=0;$i<=2;$i++) {
+	$rand_no[] = rand(2,9);
+	$rand_al[] = $alphabets[rand(0,24)];
+}
+$system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$rand_no[2];
 
 // ** OPEN CONNECTION TO THE DATABASE **
 	$db_link = openDatabase($db_hostname, $db_username, $db_password, $db_name);
@@ -38,9 +46,13 @@
 
 		// ** AUTHENTICATE A USER
 		case "auth":
-		
+			if($_POST['response']!= $_POST['system_answer']) {
+				$errorMsg = "Incorrect Response";
+				break;
+			}
+			else {
 			// LOOK FOR USERNAME AND PASSWORD IN THE DATABASE.
-			$usersql = "SELECT username, usertype, nature, batch, department, designation, password, is_confirmed FROM " . TABLE_USERS . " AS users WHERE username='" . $_POST['username'] . "' AND password=MD5('" . $_POST['password'] . "') LIMIT 1";
+			$usersql = "SELECT username, usertype, password, is_confirmed FROM " . TABLE_USERS . " AS users WHERE username='" . $_POST['username'] . "' AND password=MD5('" . $_POST['password'] . "') LIMIT 1";
 			$r_getUser = mysql_query($usersql, $db_link)
 				or die(ReportSQLError($usersql));
 			$numrows = mysql_num_rows($r_getUser);
@@ -48,17 +60,15 @@
 		    
 			// THE USERNAME IS FOUND AND ACCOUNT IS CONFIRMED
 			if (($numrows != 0) && ($t_getUser['is_confirmed'] == 1)) {
+				$usersmslimit = new UserSMSLimit();
 				
 				// REGISTER SESSION VARIABLES
 				$_SESSION['username'] = $t_getUser['username'];
 				$_SESSION['usertype'] = $t_getUser['usertype'];
-				$_SESSION['nature']   = $t_getUser['nature'];
-				$_SESSION['batch']   = $t_getUser['batch'];
-				$_SESSION['department']   = $t_getUser['department'];
-				$_SESSION['designation']   = $t_getUser['designation'];
 				if (!isset($_SESSION['abspath'])) {
 					$_SESSION['abspath'] = dirname($_SERVER['SCRIPT_FILENAME']);
 				}
+				$usersmslimit->UpdateLastLogin($datetimenow,$t_getUser['username'],$t_getUser['usertype']);
 
 				// REDIRECT TO LIST
 				header("Location: list.php");
@@ -79,9 +89,10 @@
 				// END SESSION
 				session_destroy();
 				// PRINT ERROR MESSAGE AND LOGIN SCREEN
-				$errorMsg = $lang[MSG_LOGIN_INCORRECT];
+				$errorMsg ="Incorrect Username/Password";
 			}
 			break;
+		}
 		
 		// ** REGISTER A NEW USER
 		case "register":
@@ -162,6 +173,11 @@
 		<BR><INPUT TYPE="text" SIZE=20 CLASS="formTextbox" NAME="username">
 		<P><B><?php echo $lang[LBL_PASSWORD]?></B>
 		<BR><INPUT TYPE="password" SIZE=20 CLASS="formTextbox" NAME="password">
+		<P><B>Captcha</B>
+		<BR><p style='font-size:22px;color:#053707'><b><i><?php echo $system_answer; ?></b></i></p>
+		<P><B>Response</B>
+		<BR><INPUT TYPE="Text" SIZE=20 CLASS="formTextbox" NAME="response" autocomplete="off">
+			<input type='hidden' name='system_answer' value="<?php echo $system_answer; ?>">
 		<P><INPUT TYPE="submit" CLASS="formButton" NAME="loginSubmit" VALUE="<?php echo $lang[BTN_LOGIN]?>">
 <?php
 	if ($options->allowUserReg == 1) {

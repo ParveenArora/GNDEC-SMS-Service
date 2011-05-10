@@ -75,33 +75,7 @@ $sms_time = date('F j, Y, g:i a',time());
         <TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH=570>
            <TR VALIGN="top">
               <TD WIDTH=285 CLASS="data">
-<?php
-	// PRINT WELCOME MESSAGE
-	if ($options->msgWelcome != "") {
-		echo("<B>$options->msgWelcome</B>\n");
-	}
-	// PRINT SITE LANGUAGE [disabled for release]
-	// if($options->global_options[language] != $options->user_options[language]) echo "<br>".$lang[WELCOME_SITE_LANG].": ".$options->global_options[language];
-	// if($options->global_options[language] != $options->user_options[language] AND isset($options->user_options[language]))	echo "<br>".$lang[WELCOME_UR_LANG].": ".$options->user_options[language];	
-	// PRINT LOGGED IN USER
-	if (($_SESSION['username'] == "@auth_off") || ($_SESSION['usertype'] == "guest")) {
-?>
-			<BR><?php  echo $lang[MSG_LOGIN_NOT]. '<a href=" '.FILE_INDEX.'?mode=login"> '.$lang[WELCOME_LOGIN].'</a>' ?>
-<?php
-	} else {
-?>
-                <BR><?php echo $lang[WELCOME_CURRENT_LOGIN].' <b>'.$_SESSION['username'].'</b>'?>
-<?php	
-	if ($_SESSION['usertype'] == "admin") {
-		echo('<BR>'.$lang[WELCOME_ADMIN_ACCESS]);
-	}
-	if ($_SESSION['usertype'] == "user") {
-		echo('<BR>'.$lang[WELCOME_USER_ACCESS]);
-	}
-	echo '<br><a href=" '.FILE_INDEX.'?mode=logout"> '.$lang[WELCOME_LOGOUT].'</a>';
-	}
 
-?>
 
 <?php
 //    $sql2 = "SELECT firstname FROM contact";
@@ -196,15 +170,13 @@ echo "<br><h3>Total Number of Recipients : ".$count."</h3>";
 }
 ?>
 <br>
-<table>
-<tr>
-<td><form action="list.php" method="post">
+<form action="list.php" method="post">
 <input type="image" src="images/addressbook.png" />
-</form></td>
+</form>
 
-<td><form action="sendsms.php" method="post">
+<form action="sendsms.php" method="post">
 <input type="image" src="images/send_more.png" />
-</form></td>
+</form>
 </body>
 </html>
              

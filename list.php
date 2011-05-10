@@ -51,62 +51,8 @@
 <HTML>
 <HEAD>
 	<TITLE><?php echo "$lang[TITLE_TAB] - $lang[TITLE_LIST]"?></TITLE>
-	<script type="text/javascript">
-	var phone_nos = new Array();
-	var phone_no;
-	function checkbox(objid)
-	{ 
-	var x=new Array();
-	x=document.getElementById(objid);
-		if (x.checked == true)
-		{
-		if(x.value != '')
-		phone_nos.push(x.value);
-		}
-		if (x.checked == false)
-		{
-		if(x.value != '') {
-		index = phone_nos.indexOf(x.value);
-		phone_nos.splice(index,1); }
-		}
-	}
-	
-	function sendsms(objid)
-	{
-	var x = document.getElementById(objid);
-	phone_no = phone_nos.join(',');
-	x.value = phone_no;
-	}
-	
-	function checka()
-	{
-	phone_nos = [];
-	var node_list = document.getElementsByTagName('input');
-    for (var i = 0; i < node_list.length; i++) 
-    {
-    var node = node_list[i];
-	if (node.getAttribute('type') == 'checkbox') 
-	{
-	node.checked = true;
-	if(node.getAttribute('value') != '')
-	phone_nos.push(node.getAttribute('value'));
-	}
-	}
-	}
-	
-	function unchecka()
-	{
-	phone_nos = [];
-	var node_list = document.getElementsByTagName('input');
-    for (var i = 0; i < node_list.length; i++) 
-    {
-    var node = node_list[i];
-	if (node.getAttribute('type') == 'checkbox') 
-	node.checked = false;
-	}
-	}
-	</script>
 	<LINK REL="stylesheet" HREF="styles.css" TYPE="text/css">
+	<script type='text/javascript' src='harbhag_predictive.js'></script>
 	<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
 	<META HTTP-EQUIV="EXPIRES" CONTENT="-1">
@@ -415,9 +361,10 @@
                </TABLE>
                <input type='hidden' name='phone' id='1234567654321' value='dummy' />
                <input type='button' name='checkall' value='Check All' onclick='checka()' />
-               
+               <input type='hidden' name='schedule_send' id='schedule_send' value='' />
                <input type='button' name='uncheckall' value='Uncheck All' onclick='unchecka()' />
-               <input type='submit' name='submit' value='Send SMS' onclick='sendsms(1234567654321)' />
+               <input type='submit' name='submit' value='Send SMS' onclick='sendsms(1234567654321,"send")' />
+               <input type='submit' name='submit' value='Schedule SMS' onclick='sendsms(1234567654321,"schedule")' />
                </form>
                </CENTER>
 

@@ -119,6 +119,12 @@ class Contact {
 
 }
 
+class UserSMSLimit {
+	
+	public function UpdateLastLogin($datetime,$username,$usertype) {
+		mysql_query("Update users SET LastLogin='".$datetime."' WHERE username='".$username."' AND usertype='".$usertype."'") or die(mysql_error());
+	}
+}
 
 
 ?>

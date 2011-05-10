@@ -3,6 +3,63 @@
  * Author: Harbhag Singh Sohal
  * License : GPL V3 
  */
+ 
+var phone_nos = new Array();
+var phone_no;
+
+function checkbox(objid) { 
+	var x=new Array();
+	x=document.getElementById(objid);
+		if (x.checked == true)
+		{
+		if(x.value != '')
+		phone_nos.push(x.value);
+		}
+		if (x.checked == false)
+		{
+		if(x.value != '') {
+		index = phone_nos.indexOf(x.value);
+		phone_nos.splice(index,1); }
+		}
+}
+	
+function sendsms(objid,type) {
+	var x = document.getElementById(objid);
+	phone_no = phone_nos.join(',');
+	x.value = phone_no;
+	document.getElementById("schedule_send").value=type;
+}
+	
+function checka() {
+	phone_nos = [];
+	var node_list = document.getElementsByTagName('input');
+    for (var i = 0; i < node_list.length; i++) 
+    {
+    var node = node_list[i];
+	if (node.getAttribute('type') == 'checkbox') 
+	{
+	node.checked = true;
+	if(node.getAttribute('value') != '')
+	phone_nos.push(node.getAttribute('value'));
+	}
+	}
+}
+	
+function unchecka() {
+	phone_nos = [];
+	var node_list = document.getElementsByTagName('input');
+    for (var i = 0; i < node_list.length; i++) 
+    {
+    var node = node_list[i];
+	if (node.getAttribute('type') == 'checkbox') 
+	node.checked = false;
+	}
+}
+
+
+
+
+
 
 function getXmlHttpRequestObject() {
 	if (window.XMLHttpRequest) {
@@ -26,7 +83,7 @@ function handleSearchSuggest() {
 			var suggest = '<div id="f" onmouseover="javascript:suggestOver(this);" ';
 			suggest += 'onmouseout="javascript:suggestOut(this);" ';
 			suggest += 'onclick="javascript:setSearch(this.innerHTML);" ';
-			suggest += 'class="suggest_link">' + str[i] + '</div>';
+			suggest += 'class="suggest_link" style="cursor:default">' + str[i] + '</div>';
 			ss.innerHTML += suggest;
 		}
 	}
@@ -66,7 +123,8 @@ function searchSuggest() {
 function validate_mobile(type) {
 	var mob_val = document.getElementById('search').value;
 	var wrong_mob = [];
-	var num_array = "1234567890+"
+	var num_array = "1234567890"
+	var first_digit = "987";
 	if(mob_val=='') {
 		alert("Please add atleast one Receiver");
 		return false;
@@ -75,26 +133,34 @@ function validate_mobile(type) {
 		var mob_array = mob_val.split(',');
 		for(i=0;i<=mob_array.length-1;i++) {
 			var mob_arr = mob_array[i].split('');
+			var count = 0;
 			for(j=0;j<=mob_arr.length-1;j++) {
-				var count = 0;
-				if(num_array.indexOf(mob_arr[j])=='-1') {
-					count++;
+				if(j==0) {
+					if(mob_arr[j]=='+') {
+						wrong_mob.push("\n"+mob_array[i]+" (No Need to add '+' or '91')");
+						count++;
+					}
+					if(count==0 && first_digit.indexOf(mob_arr[j])=='-1') {
+						wrong_mob.push("\n"+mob_array[i]+" (Mobile No. Should Start With 9 or 8 or 7 only)");
+						count++;
+					}
 				}
-			}
-			if(count!=0) {
-				wrong_mob.push(mob_array[i]+"(Contains Invalid Character) ");
-			}
-			else {
-				if(mob_arr.length<10 && mob_arr.length!=0 ) {
-					wrong_mob.push(mob_array[i]+"(Contains <10 Character) ");
+				if(j!=0 && count==0){
+					if(num_array.indexOf(mob_arr[j])=='-1') {
+						wrong_mob.push("\n"+mob_array[i]+" (Contains Invalid Characters)");
+						count++;
+					}
 				}
-				if(mob_arr.length>13) {
-					wrong_mob.push(mob_array[i]+"(Contains >13 Character) ");
+				if(j==mob_arr.length-1 && count==0) {
+					if(mob_arr.length!=10 && count==0) {
+						wrong_mob.push("\n"+mob_array[i]+" (No. of digits not equal to 10)");
+						count++;
+					}
 				}
 			}
 		}
 		if(wrong_mob.length!=0) {
-			alert("These are the wrong Mobile Numbers, Please correct them befor sending SMS: "+wrong_mob);
+			alert("These are the wrong Mobile Numbers, Please correct them befor sending SMS:\n"+wrong_mob);
 			return false;
 		}
 	}

@@ -48,6 +48,7 @@
 	// ** RETRIEVE CONTACT LIST BY GROUP **
 	$r_contact = $list->retrieve($_SESSION['username']);
 	$signature = strtoupper($_SESSION['username']);
+	$nos=str_replace("-","",$_POST['phone']);
 	echo "<link href='styles.css' rel='stylesheet' type='text/css'>";
 echo "<link rel='stylesheet' media='all' type='text/css' href='css/ui-lightness/jquery-ui-1.8.11.custom.css' />";
 echo "<script type='text/javascript' src='jquery-1.5.min.js'></script>";
@@ -100,10 +101,10 @@ function limitText(limitField, limitCount, limitNum) {
         
         
 <?php
-if(isset($_POST['schedule'])) {
+if(isset($_POST['schedule']) or $_POST['schedule_send']=='schedule') {
 	echo "<table><form action='insert.php' method='post'>";
 	echo "<tr><td></td><td>For multiple Numbers Use commas to separate</td></tr>";
-	echo "<tr><td>Enter Number</td><td><input type='text' name='mobile' id='search' onkeyup='searchSuggest()' /></td></tr>";
+	echo "<tr><td>Enter Number</td><td><input type='text' name='mobile' id='search' value='".$nos."' onkeyup='searchSuggest()' /></td></tr>";
 	echo "<tr><td><div id='suggestions'></div></tr></td>";
 	echo "<tr><td>Message</td><td><textarea name='msgdata' rows='10' cols='40' onKeyDown='limitText(this.form.msgdata,this.form.countdown,140)' 
 onKeyUp='limitText(this.form.limitedtextarea,this.form.countdown,140)'>
@@ -113,7 +114,7 @@ onKeyUp='limitText(this.form.limitedtextarea,this.form.countdown,140)'>
 echo "<tr><td>Time</td><td><input type='text' name='datetime' id='dt' /></td></tr>";
 echo "<input type='hidden' name='schedule' id='sch' />";
 echo "<tr><td><input type='submit' value='Schedule' onclick='return validate_mobile(\"schedule\")' /></td></form>";
-echo "<td><form action='list.php' method='post'><input type='submit' value='Go Back'/></form></td></tr></table>";
+echo "<td><form action='list.php' method='post'><input type='submit' value='Home'/></form></td></tr></table>";
 }
 else {
 $sql ="SELECT fullname FROM users WHERE username='".$_SESSION['username']."'";
@@ -122,7 +123,6 @@ $result = mysql_query($sql);
 $result2 = mysql_query($sql2);
 $fullname = mysql_fetch_array($result);
 $mobileno = mysql_fetch_array($result2);
-$nos=str_replace("-","",$_POST['phone']);
 if(isset($_POST['resend'])){
 	$nos = $_POST['resend_mobile'];
 }
@@ -158,25 +158,14 @@ You have <input readonly type="text" name="countdown" size="3" value="140"> char
 <br /><br>
 <?php
 } ?>
-</td></tr>
-<tr><td>
-<center><table>
-<tr><td valign='top'>
-<input type="image" src="images/send_sms.png" onclick='return validate_mobile("simple")' />
-</form>
-</td>
-<td valign='top'>
-<form action="list.php" method="post">
-<input type="image" src="images/addressbook.png" />
-</form></td>
-</td><td valign='top'>
-<form action="student_search.php" method="post">
-<input type="image" src="images/student1.png" />
-</form></td>
-
-</tr></table></center>
 </td></tr></table>
-<b><p style="color:#07260e">Note: Replies to this number are not monitored yet.</p>
+<div id='send_sms_bottons'>
+<table>
+<tr><td><input type="image" src="images/send_sms.png" onclick='return validate_mobile("simple")' />
+</form></td><td>
+<a href='list.php'><img src="images/addressbook.png" /></a>
+</td></tr></table>
+</div>
 </body>
 </html>
 <?php } ?>
