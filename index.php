@@ -174,7 +174,7 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 		<P><B><?php echo $lang[LBL_PASSWORD]?></B>
 		<BR><INPUT TYPE="password" SIZE=20 CLASS="formTextbox" NAME="password">
 		<P><B>Captcha</B>
-		<BR><p style='font-size:22px;color:#053707'><b><i><?php echo $system_answer; ?></b></i></p>
+		<BR><?php echo "<img src='image_create.php?txt=".$system_answer."' />"; ?>
 		<P><B>Response</B>
 		<BR><INPUT TYPE="Text" SIZE=20 CLASS="formTextbox" NAME="response" autocomplete="off">
 			<input type='hidden' name='system_answer' value="<?php echo $system_answer; ?>">
@@ -195,7 +195,17 @@ echo "<br><br><br><br><br>";
 
 ?>
 </FORM><p>
-
+	<?php 
+	if($options->service_status==1) {
+		echo "<div id='service_status_ok'>Status: SMS Service is Running OK</div>";
+	}
+	if($options->service_status==2) {
+		echo "<div id='service_status_down'>Status: SMS Service is currently Down</div>";
+	}
+	if($options->service_status==3) {
+		echo "<div id='service_status_maintenance'>Status: SMS Service is currently under maintenance</div>";
+	}
+	?>
 </TBODY>
 </TABLE>
 </TD></TR>
