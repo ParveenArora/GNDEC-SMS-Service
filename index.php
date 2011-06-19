@@ -196,19 +196,26 @@ echo "<br><br><br><br><br>";
 
 ?>
 </FORM><p>
-	<?php
-	if($options->service_status!=3) {
-		if($status->bearerbox==true && $status->sqlbox==true) {
-			echo "<div id='service_status_ok'>Status: SMS Service is Running OK</div>";
-		}
-		if($status->bearerbox==false or $status->sqlbox==false) {
-			echo "<div id='service_status_down'>Status: SMS Service is currently Down</div>";
-		}
-	}
-	else {
-			echo "<div id='service_status_maintenance'>Status: SMS Service is currently under maintenance</div>";
-	}
-	?>
+	<div id='status_table'>
+		<table>
+			<tr><th>Service</th><th>Description</th><th>Status</th></tr>
+			<td>Sending </td><td>Main Service to send SMS</td><td>
+				<?php if($status->bearerbox==true && $status->sqlbox==true) 
+				{ echo "<p style='background-color:green; font-weight:bold;'>OK</p>"; }
+				if($status->bearerbox==false or $status->sqlbox==false)
+				{ echo "<p style='background-color:red; font-weight:bold;'>Down</p>"; }
+				?>
+			</td></tr>
+			<td>Receiving </td><td>Main Service to receive SMS</td><td>
+			<?php 
+			if($status->bearerbox==false or $status->sqlbox==false or $status->smsbox==false)
+				{ echo "<p style='background-color:red; font-weight:bold;'>Down</p>"; }
+			if($status->bearerbox==true && $status->sqlbox==true && $status->smsbox==true)
+				{ echo "<p style='background-color:green; font-weight:bold;'>OK</p>"; }
+				?>
+			</td></tr>
+			</table>
+			</div>
 </TBODY>
 </TABLE>
 </TD></TR>

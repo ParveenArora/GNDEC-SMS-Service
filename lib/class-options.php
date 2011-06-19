@@ -35,7 +35,6 @@ class Options {
 	var $global_options;
 	var $user_options;
 	var $message;
-	var $service_status;
 
 	
 	// CONSTRUCTOR FUNCTION
@@ -81,7 +80,7 @@ class Options {
 		$this->language         = $this->load_lang($this->global_options['language']);
 		$this->defaultLetter    = $this->global_options['defaultLetter'];
 		$this->limitEntries     = $this->global_options['limitEntries'];
-		$this->service_status     = $this->global_options['service_status'];
+		
 	}
 	
 	function set_user() {
@@ -109,7 +108,7 @@ class Options {
 		// It assumes that the options have already been placed in the $_POST superglobal.
 		global $db_link;
 		global $lang;
-		$this->service_status = $_POST['service_status'];
+		
 
 		// CHECK NUMERICAL INPUT
 		// This is DIFFERENT from the previous implemenation (TAB 1.03 and earlier)
@@ -165,8 +164,8 @@ class Options {
 				eMailAdmin        = $this->eMailAdmin,
 				language          = '$this->language',
 				defaultLetter     = '$this->defaultLetter',
-				limitEntries      = $this->limitEntries,
-				service_status    = $this->service_status";
+				limitEntries      = $this->limitEntries,";
+
 
 		mysql_query($sql, $db_link)
 			or die(reportSQLError($lang['ERR_OPTIONS_NO_SAVE']));

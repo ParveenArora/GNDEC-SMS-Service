@@ -197,15 +197,6 @@ function saveEntry() {
 					<?php echo $lang['OPT_OPEN_POPUP_HELP']?>
 				</TD>
 			</TR>
-			<TR VALIGN="top">
-				<TD WIDTH=200 CLASS="data" ALIGN="right"><B>Service Status</B></TD>
-				<TD WIDTH=360 CLASS="data" COLSPAN=2>
-					Service is :
-					<BR><INPUT TYPE="radio" NAME="service_status" VALUE="1"<?php if ($options->service_status == 1) { echo (" CHECKED"); }?>> Running Ok
-					<BR><INPUT TYPE="radio" NAME="service_status" VALUE="2"<?php if ($options->service_status == 2) { echo (" CHECKED"); }?>> Down
-					<BR><INPUT TYPE="radio" NAME="service_status" VALUE="3"<?php if ($options->service_status == 3) { echo (" CHECKED"); }?>> Under Maintainence
-				</TD>
-			</TR>
 
 			<?php /* $useMailScript */ ?>
 			<TR VALIGN="top">
