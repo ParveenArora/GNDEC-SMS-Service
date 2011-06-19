@@ -46,12 +46,8 @@
 					$newuserFullName = $_POST['newuserFullName'];
 					$newuserMobile = $_POST['newuserMobile'];
 					$newuserType = $_POST['newuserType'];
-					$newuserNature = $_POST['newuserNature'];
-					$newuserDepartment = $_POST['newuserDepartment'];
-					$newuserBatch = $_POST['newuserBatch'];
-					$newuserDesignation = $_POST['newuserDesignation'];
 					$newuserEmail = $_POST['newuserEmail'];   // NOT VALIDATED
-					$sql = "INSERT INTO ". TABLE_USERS ." (fullname, username, usertype, nature, password, email, mobile, is_confirmed) VALUES ('$newuserFullName','$newuserName', '$newuserType', '$newuserNature', MD5('$newuserPass'), '$newuserEmail','$newuserMobile', 1)";
+					$sql = "INSERT INTO ". TABLE_USERS ." (fullname, username, usertype,password, email, mobile, is_confirmed) VALUES ('$newuserFullName','$newuserName', '$newuserType', MD5('$newuserPass'), '$newuserEmail','$newuserMobile', 1)";
 					mysql_query($sql, $db_link);
 					$opps = mysql_errno();
 					if($opps ==1062) {
@@ -190,18 +186,6 @@
 				$actionMsg .= $lang['ERR_USER_EMAIL_INVALID'];
 			}
 		break;
-		
-		case "addinfo":
-		//$nnuser = $_POST['nnnuser'];
-		$nuser = $_POST['nnnuser'];
-					$newuserDepartment = $_POST['newuserDepartment'];
-					$newuserBatch = $_POST['newuserBatch'];
-					$newuserDesignation = $_POST['newuserDesignation'];
-					
-					$sqlu = "UPDATE ". TABLE_USERS ." SET department='".$newuserDepartment."', batch='".$newuserBatch."', designation = '".$newuserDesignation."' WHERE username = '".$nuser."'";
-					mysql_query($sqlu, $db_link);
-					
-					echo "<h1>New User ". strtoupper($nuser) . " has been added</h1>" ;
 					
 
 		// DEFAULT
@@ -266,7 +250,7 @@
 	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserEmail" VALUE="" MAXLENGTH=50></TD></TR>
 	              			<TR VALIGN="top">
 						<TD WIDTH=200 CLASS="data" STYLE="text-align:right"><B><?php echo $lang['LBL_PHONE1']?></B> <?php echo "(Compulsory)"?></TD>
-	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserMobile" VALUE="+91" MAXLENGTH=50></TD></TR>
+	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserMobile" MAXLENGTH=10></TD></TR>
 						<TR VALIGN="top" >
 						<TD WIDTH=100 CLASS="data" STYLE="text-align:right"><B><?php echo $lang['LBL_USERTYPE']?></B></TD>
 	              			<TD WIDTH=150 CLASS="data">

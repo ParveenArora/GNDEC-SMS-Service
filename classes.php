@@ -126,5 +126,26 @@ class UserSMSLimit {
 	}
 }
 
+class SmsStatus {
+	var $bearerbox = false;
+	var $smsbox = false;
+	var $sqlbox = false;
+	
+	function __construct() {
+		exec("pgrep bearerbox",$outbearerbox,$p_bearerbox);
+		exec("pgrep sqlbox",$outsqlbox, $p_sqlbox);
+		exec("pgrep smsbox",$outsmsbox, $p_smsbox);
+		if($p_bearerbox==0) {
+			$this->bearerbox=true;
+		}
+		if($p_sqlbox==0) {
+			$this->sqlbox=true;
+		}
+		if($p_smsbox==0) {
+			$this->smsbox=true;
+		}
+	}
+}
+		
 
 ?>

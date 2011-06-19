@@ -19,7 +19,7 @@
 // ** START SESSION **
 	session_start();
 	$datetimenow = date("y-m-d H:i:s");
-	$alphabets = array('a','b','c','d','e','f','g','h','i','j','k','m','n','o','p','q','r','s','t','u','v','w','x','y','z');
+	$alphabets = array('a','b','c','d','e','f','g','h','i','j','k','m','n','p','q','r','s','t','u','v','w','x','y','z');
 for($i=0;$i<=2;$i++) {
 	$rand_no[] = rand(2,9);
 	$rand_al[] = $alphabets[rand(0,24)];
@@ -31,6 +31,7 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 
 // ** RETRIEVE OPTIONS THAT PERTAIN TO THIS PAGE **
 	$options = new Options();
+	$status = new SmsStatus();
 
 	// ** FIGURE OUT WHAT'S GOING ON
 	switch($_GET['mode']) {
@@ -195,15 +196,17 @@ echo "<br><br><br><br><br>";
 
 ?>
 </FORM><p>
-	<?php 
-	if($options->service_status==1) {
-		echo "<div id='service_status_ok'>Status: SMS Service is Running OK</div>";
+	<?php
+	if($options->service_status!=3) {
+		if($status->bearerbox==true && $status->sqlbox==true) {
+			echo "<div id='service_status_ok'>Status: SMS Service is Running OK</div>";
+		}
+		if($status->bearerbox==false or $status->sqlbox==false) {
+			echo "<div id='service_status_down'>Status: SMS Service is currently Down</div>";
+		}
 	}
-	if($options->service_status==2) {
-		echo "<div id='service_status_down'>Status: SMS Service is currently Down</div>";
-	}
-	if($options->service_status==3) {
-		echo "<div id='service_status_maintenance'>Status: SMS Service is currently under maintenance</div>";
+	else {
+			echo "<div id='service_status_maintenance'>Status: SMS Service is currently under maintenance</div>";
 	}
 	?>
 </TBODY>
