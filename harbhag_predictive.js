@@ -172,3 +172,10 @@ function validate_mobile(type) {
 		}
 	}
 }
+
+function reset_password(id) {
+	if(document.getElementById(id).value=='') {
+		alert("Please enter your Username");
+		return false;
+	}
+}

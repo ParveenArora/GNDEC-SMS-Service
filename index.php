@@ -15,6 +15,7 @@
 	require_once(FILE_FUNCTIONS);
 	require_once(FILE_CLASS_OPTIONS);
 	require_once('classes.php');
+	require_once(FILE_LIB_MAIL);
 
 // ** START SESSION **
 	session_start();
@@ -138,7 +139,52 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 
 	// END SWITCH
 	}
-	
+if($status->bearerbox==false or $status->sqlbox==false or $status->smsbox==false) {
+	$m_bearerbox = 'OK';
+	$m_sqlbox = 'OK';
+	$m_smsbox = 'OK';
+	$result = mysql_fetch_assoc(mysql_query("SELECT status_notification_admin from options"));
+	if($status->bearerbox==false) {
+		$m_bearerbox='DOWN';
+	}
+	if($status->sqlbox==false) {
+		$m_sqlbox='DOWN';
+	}
+	if($status->smsbox==false) {
+		$m_smsbox='DOWN';
+	}
+	if($result['status_notification_admin']==0) {
+		$mail = new PHPMailer();
+		$mail->SetLanguage("en", "language");
+		$mail->IsSMTP();
+		$mail->SMTPAuth = true; 
+		$mail->From = "gndec.sms.service@gmail.com";
+		$mail->FromName = "GNDEC SMS Service";
+		$mail->AddAddress("harbhag.sohal@gmail.com");
+		$mail->WordWrap = 50;                              
+		$mail->IsHTML(true);                                
+		$mail->Subject = "SMS Service Status";
+		$mail->Body    = "Status of the Services is as follows:
+		<table style='border:2px solid black;border-collapse:collapse;width:100%'>
+		<tr>
+		<th style='border:2px solid black;border-collapse:collapse'>Bearerbox</th>
+		<th stsyle='border:2px solid black;border-collapse:collapse'>Sqlbox</th>
+		<th style='border:2px solid black;border-collapse:collapse'>SMSbox</th>
+		</tr>
+		<tr>
+		<td style='border:2px solid black;border-collapse:collapse'>".$m_bearerbox."</td>
+		<td style='border:2px solid black;border-collapse:collapse'>".$m_sqlbox."</td>
+		<td style='border:2px solid black;border-collapse:collapse'>".$m_smsbox."</td>
+		</tr>
+		</table>";
+		$mail->Send();
+		mysql_query("UPDATE options SET status_notification_admin='1'");
+	}
+}
+
+if($status->bearerbox==true && $status->sqlbox==true && $status->smsbox==true) {
+	mysql_query("UPDATE options SET status_notification_admin='0'");
+}
 
 ?>
 <HTML>
@@ -179,7 +225,8 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 		<P><B>Response</B>
 		<BR><INPUT TYPE="Text" SIZE=20 CLASS="formTextbox" NAME="response" autocomplete="off">
 			<input type='hidden' name='system_answer' value="<?php echo $system_answer; ?>">
-		<P><INPUT TYPE="submit" CLASS="formButton" NAME="loginSubmit" VALUE="<?php echo $lang[BTN_LOGIN]?>">
+		<P><INPUT TYPE="submit" CLASS="formButton" NAME="loginSubmit" VALUE="<?php echo "Login"?>">
+		<P><a href='reset_password'><INPUT TYPE="button" CLASS="formButton" NAME="loginSubmit" VALUE="<?php echo "Forgot Password ?"?>"></a>
 <?php
 	if ($options->allowUserReg == 1) {
 		echo("<P><A HREF=\"" .FILE_INDEX. "?mode=register\">$lang[MSG_REGISTER_LOST]</A>\n");
