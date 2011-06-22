@@ -19,7 +19,9 @@
 
 // ** START SESSION **
 	session_start();
-	$datetimenow = date("y-m-d H:i:s");
+$datetimenow = date("y-m-d H:i:s");
+/* Check if user has been remembered */
+
 	$alphabets = array('a','b','c','d','e','f','g','h','i','j','k','m','n','p','q','r','s','t','u','v','w','x','y','z');
 for($i=0;$i<=2;$i++) {
 	$rand_no[] = rand(2,9);
@@ -33,6 +35,15 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 // ** RETRIEVE OPTIONS THAT PERTAIN TO THIS PAGE **
 	$options = new Options();
 	$status = new SmsStatus();
+	
+	if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass']) && isset($_COOKIE['cooktype'])){
+      $_SESSION['username'] = $_COOKIE['cookname'];
+      $_SESSION['password'] = $_COOKIE['cookpass'];
+      $_SESSION['usertype'] = $_COOKIE['cooktype'];
+      $usersmslimit = new UserSMSLimit();
+      $usersmslimit->UpdateLastLogin($datetimenow,$t_getUser['username'],$t_getUser['usertype']);
+      header("location:list.php");
+   }
 
 	// ** FIGURE OUT WHAT'S GOING ON
 	switch($_GET['mode']) {
@@ -40,6 +51,11 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 		// **LOGOUT **
 		case "logout":
 			session_destroy();
+			if(isset($_COOKIE['cookname']) && isset($_COOKIE['cookpass'])){
+				setcookie("cookname", "", time()-60*60*24*100, "/");
+				setcookie("cookpass", "", time()-60*60*24*100, "/");
+				setcookie("cooktype", "", time()-60*60*24*100, "/");
+			}
 			require_once('languages/' . $options->language . '.php');			
 			// PRINT MESSAGE
 			$errorMsg = $lang[MSG_LOGGED_OUT];
@@ -48,54 +64,109 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 
 		// ** AUTHENTICATE A USER
 		case "auth":
-			if($_POST['response']!= $_POST['system_answer']) {
-				$errorMsg = "Incorrect Response";
-				break;
-			}
-			else {
+			if($_SESSION['logintry']==3) {
+				if($_POST['response']!= $_POST['system_answer']) {
+					$errorMsg = "Incorrect Response";
+					break;
+				}
+				else {
 			// LOOK FOR USERNAME AND PASSWORD IN THE DATABASE.
-			$usersql = "SELECT username, usertype, password, is_confirmed FROM " . TABLE_USERS . " AS users WHERE username='" . $_POST['username'] . "' AND password=MD5('" . $_POST['password'] . "') LIMIT 1";
-			$r_getUser = mysql_query($usersql, $db_link)
-				or die(ReportSQLError($usersql));
-			$numrows = mysql_num_rows($r_getUser);
-		    $t_getUser = mysql_fetch_array($r_getUser); 
+					$usersql = "SELECT username, usertype, password, is_confirmed FROM " . TABLE_USERS . " AS users WHERE username='" . $_POST['username'] . "' AND password=MD5('" . $_POST['password'] . "') LIMIT 1";
+					$r_getUser = mysql_query($usersql, $db_link)
+						or die(ReportSQLError($usersql));
+					$numrows = mysql_num_rows($r_getUser);
+					$t_getUser = mysql_fetch_array($r_getUser); 
 		    
 			// THE USERNAME IS FOUND AND ACCOUNT IS CONFIRMED
-			if (($numrows != 0) && ($t_getUser['is_confirmed'] == 1)) {
-				$usersmslimit = new UserSMSLimit();
+					if (($numrows != 0) && ($t_getUser['is_confirmed'] == 1)) {
+						$usersmslimit = new UserSMSLimit();
 				
 				// REGISTER SESSION VARIABLES
-				$_SESSION['username'] = $t_getUser['username'];
-				$_SESSION['usertype'] = $t_getUser['usertype'];
-				if (!isset($_SESSION['abspath'])) {
-					$_SESSION['abspath'] = dirname($_SERVER['SCRIPT_FILENAME']);
-				}
-				$usersmslimit->UpdateLastLogin($datetimenow,$t_getUser['username'],$t_getUser['usertype']);
+					$_SESSION['username'] = $t_getUser['username'];
+					$_SESSION['usertype'] = $t_getUser['usertype'];
+					if (!isset($_SESSION['abspath'])) {
+						$_SESSION['abspath'] = dirname($_SERVER['SCRIPT_FILENAME']);
+					}
+					$usersmslimit->UpdateLastLogin($datetimenow,$t_getUser['username'],$t_getUser['usertype']);
 
 				// REDIRECT TO LIST
-				header("Location: list.php");
-				exit();
+					header("Location: list.php");
+					exit();
 				
-			}
+					}
 
 			// ACCOUNT MUST BE CONFIRMED
-			elseif (($numrows != 0) && ($t_getUser['is_confirmed'] != 1)) {
+					elseif (($numrows != 0) && ($t_getUser['is_confirmed'] != 1)) {
 				// END SESSION
-				session_destroy();
+						session_destroy();
 				// PRINT ERROR MESSAGE AND LOGIN SCREEN
-				$errorMsg = $lang[ERR_USER_CONFIRMED_NOT];
-			}
+						$errorMsg = $lang[ERR_USER_CONFIRMED_NOT];
+					}
 
 			// WRONG USERNAME
-			else {
+					else {
 				// END SESSION
-				session_destroy();
+						session_destroy();
 				// PRINT ERROR MESSAGE AND LOGIN SCREEN
-				$errorMsg ="Incorrect Username/Password";
+						$errorMsg ="Incorrect Username/Password";
+					}
+				
 			}
-			break;
 		}
-		
+		else {
+			if($_POST['response']!= $_POST['system_answer']) {
+					$errorMsg = "Incorrect Response";
+					break;
+				}
+				else {
+			// LOOK FOR USERNAME AND PASSWORD IN THE DATABASE.
+					$usersql = "SELECT username, usertype, password, is_confirmed FROM " . TABLE_USERS . " AS users WHERE username='" . $_POST['username'] . "' AND password=MD5('" . $_POST['password'] . "') LIMIT 1";
+					$r_getUser = mysql_query($usersql, $db_link)
+						or die(ReportSQLError($usersql));
+					$numrows = mysql_num_rows($r_getUser);
+					$t_getUser = mysql_fetch_array($r_getUser); 
+		    
+			// THE USERNAME IS FOUND AND ACCOUNT IS CONFIRMED
+					if (($numrows != 0) && ($t_getUser['is_confirmed'] == 1)) {
+						$usersmslimit = new UserSMSLimit();
+				
+				// REGISTER SESSION VARIABLES
+					$_SESSION['username'] = $t_getUser['username'];
+					$_SESSION['usertype'] = $t_getUser['usertype'];
+					if (!isset($_SESSION['abspath'])) {
+						$_SESSION['abspath'] = dirname($_SERVER['SCRIPT_FILENAME']);
+					}
+					$usersmslimit->UpdateLastLogin($datetimenow,$t_getUser['username'],$t_getUser['usertype']);
+					if(isset($_POST['rememberme'])){
+						setcookie("cookname", $_SESSION['username'], time()+60*60*24*100, "/");
+						setcookie("cookpass", $_POST['password'], time()+60*60*24*100, "/");
+						setcookie("cooktype", $_SESSION['usertype'], time()+60*60*24*100, "/");
+					}
+				// REDIRECT TO LIST
+					header("Location: list.php");
+					exit();
+				
+					}
+
+			// ACCOUNT MUST BE CONFIRMED
+					elseif (($numrows != 0) && ($t_getUser['is_confirmed'] != 1)) {
+				// END SESSION
+						session_destroy();
+				// PRINT ERROR MESSAGE AND LOGIN SCREEN
+						$errorMsg = $lang[ERR_USER_CONFIRMED_NOT];
+					}
+
+			// WRONG USERNAME
+					else {
+				// END SESSION
+						session_destroy();
+				// PRINT ERROR MESSAGE AND LOGIN SCREEN
+						$errorMsg ="Incorrect Username/Password";
+					}
+				
+			}
+		}
+		break;
 		// ** REGISTER A NEW USER
 		case "register":
 			header("Location: " . FILE_REGISTER);
@@ -225,6 +296,8 @@ if($status->bearerbox==true && $status->sqlbox==true && $status->smsbox==true) {
 		<P><B>Response</B>
 		<BR><INPUT TYPE="Text" SIZE=20 CLASS="formTextbox" NAME="response" autocomplete="off">
 			<input type='hidden' name='system_answer' value="<?php echo $system_answer; ?>">
+			<br><input type='checkbox' id='rememberme' name='rememberme' value='yes'>
+			<label for='rememberme'>Remember Me</label>
 		<P><INPUT TYPE="submit" CLASS="formButton" NAME="loginSubmit" VALUE="<?php echo "Login"?>">
 		<P><a href='reset_password'><INPUT TYPE="button" CLASS="formButton" NAME="loginSubmit" VALUE="<?php echo "Forgot Password ?"?>"></a>
 <?php
