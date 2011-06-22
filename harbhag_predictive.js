@@ -179,3 +179,59 @@ function reset_password(id) {
 		return false;
 	}
 }
+
+function add_user() {
+	var mob_val = document.getElementById('newuserMobile').value;
+	var wrong_mob = [];
+	var num_array = "1234567890"
+	var first_digit = "987";
+	if(mob_val=='') {
+		alert("Please Enter Valid Mobile");
+		return false;
+	}
+	else {
+		var mob_array = mob_val.split(',');
+		for(i=0;i<=mob_array.length-1;i++) {
+			var mob_arr = mob_array[i].split('');
+			var count = 0;
+			for(j=0;j<=mob_arr.length-1;j++) {
+				if(j==0) {
+					if(mob_arr[j]=='+') {
+						wrong_mob.push("\n"+mob_array[i]+" (No Need to add '+' or '91')");
+						count++;
+					}
+					if(count==0 && first_digit.indexOf(mob_arr[j])=='-1') {
+						wrong_mob.push("\n"+mob_array[i]+" (Mobile No. Should Start With 9 or 8 or 7 only)");
+						count++;
+					}
+				}
+				if(j!=0 && count==0){
+					if(num_array.indexOf(mob_arr[j])=='-1') {
+						wrong_mob.push("\n"+mob_array[i]+" (Contains Invalid Characters)");
+						count++;
+					}
+				}
+				if(j==mob_arr.length-1 && count==0) {
+					if(mob_arr.length!=10 && count==0) {
+						wrong_mob.push("\n"+mob_array[i]+" (No. of digits not equal to 10)");
+						count++;
+					}
+				}
+			}
+		}
+		if(wrong_mob.length!=0) {
+			alert("Wrong Mobile No. Please correct The following errors:\n"+wrong_mob);
+			return false;
+		}
+	}
+	var email = document.getElementById('newuserEmail').value;
+	if(email=='') {
+		alert("Please Enter Valid Email");
+		return false;
+	}
+	var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+	if(!email.match(emailPattern)) {
+		alert("Invalid Email");
+		return false;
+	}
+}

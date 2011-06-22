@@ -33,7 +33,7 @@
 // ** END INITIALIZATION *******************************************************
 
 	// CREATE THE LIST.	
-	$list = &new ContactList();
+	$list = new ContactList();
 	
 	// THIS PAGE TAKES SEVERAL GET VARIABLES
 	// ie. list.php?group_id=6&page=2&letter=c&limit=20

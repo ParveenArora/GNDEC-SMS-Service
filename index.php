@@ -64,7 +64,6 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 
 		// ** AUTHENTICATE A USER
 		case "auth":
-			if($_SESSION['logintry']==3) {
 				if($_POST['response']!= $_POST['system_answer']) {
 					$errorMsg = "Incorrect Response";
 					break;
@@ -112,60 +111,6 @@ $system_answer = $rand_al[0].$rand_no[0].$rand_al[1].$rand_no[1].$rand_al[2].$ra
 					}
 				
 			}
-		}
-		else {
-			if($_POST['response']!= $_POST['system_answer']) {
-					$errorMsg = "Incorrect Response";
-					break;
-				}
-				else {
-			// LOOK FOR USERNAME AND PASSWORD IN THE DATABASE.
-					$usersql = "SELECT username, usertype, password, is_confirmed FROM " . TABLE_USERS . " AS users WHERE username='" . $_POST['username'] . "' AND password=MD5('" . $_POST['password'] . "') LIMIT 1";
-					$r_getUser = mysql_query($usersql, $db_link)
-						or die(ReportSQLError($usersql));
-					$numrows = mysql_num_rows($r_getUser);
-					$t_getUser = mysql_fetch_array($r_getUser); 
-		    
-			// THE USERNAME IS FOUND AND ACCOUNT IS CONFIRMED
-					if (($numrows != 0) && ($t_getUser['is_confirmed'] == 1)) {
-						$usersmslimit = new UserSMSLimit();
-				
-				// REGISTER SESSION VARIABLES
-					$_SESSION['username'] = $t_getUser['username'];
-					$_SESSION['usertype'] = $t_getUser['usertype'];
-					if (!isset($_SESSION['abspath'])) {
-						$_SESSION['abspath'] = dirname($_SERVER['SCRIPT_FILENAME']);
-					}
-					$usersmslimit->UpdateLastLogin($datetimenow,$t_getUser['username'],$t_getUser['usertype']);
-					if(isset($_POST['rememberme'])){
-						setcookie("cookname", $_SESSION['username'], time()+60*60*24*100, "/");
-						setcookie("cookpass", $_POST['password'], time()+60*60*24*100, "/");
-						setcookie("cooktype", $_SESSION['usertype'], time()+60*60*24*100, "/");
-					}
-				// REDIRECT TO LIST
-					header("Location: list.php");
-					exit();
-				
-					}
-
-			// ACCOUNT MUST BE CONFIRMED
-					elseif (($numrows != 0) && ($t_getUser['is_confirmed'] != 1)) {
-				// END SESSION
-						session_destroy();
-				// PRINT ERROR MESSAGE AND LOGIN SCREEN
-						$errorMsg = $lang[ERR_USER_CONFIRMED_NOT];
-					}
-
-			// WRONG USERNAME
-					else {
-				// END SESSION
-						session_destroy();
-				// PRINT ERROR MESSAGE AND LOGIN SCREEN
-						$errorMsg ="Incorrect Username/Password";
-					}
-				
-			}
-		}
 		break;
 		// ** REGISTER A NEW USER
 		case "register":

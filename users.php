@@ -202,6 +202,7 @@
 	<META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
 	<META HTTP-EQUIV="EXPIRES" CONTENT="-1">
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo $lang['CHARSET']?>">	
+	<script type='text/javascript' src='harbhag_predictive.js'></script>
 	<SCRIPT LANGUAGE="JavaScript">
 	<!--
 
@@ -244,13 +245,13 @@
 						<TR VALIGN="top">
 						<TD WIDTH=200 CLASS="data" STYLE="text-align:right"><B><?php echo "Username"?></B></TD>
 	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserName" VALUE="" MAXLENGTH=15></TD>
-						<TD WIDTH=150 CLASS="data" ROWSPAN=5 VALIGN="bottom"><INPUT TYPE="submit" CLASS="formButton" NAME="addUser" VALUE="<?php echo $lang['BTN_ADD']?>"></TD></TR>
+						<TD WIDTH=150 CLASS="data" ROWSPAN=5 VALIGN="bottom"><INPUT TYPE="submit" CLASS="formButton" NAME="addUser" VALUE="<?php echo $lang['BTN_ADD']?>" onclick="return add_user()"></TD></TR>
 						<TR VALIGN="top">
 						<TD WIDTH=200 CLASS="data" STYLE="text-align:right"><B><?php echo $lang['LBL_EMAIL']?></B> <?php echo "(Compulsory)"?></TD>
-	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserEmail" VALUE="" MAXLENGTH=50></TD></TR>
+	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserEmail" id='newuserEmail' VALUE="" MAXLENGTH=50></TD></TR>
 	              			<TR VALIGN="top">
 						<TD WIDTH=200 CLASS="data" STYLE="text-align:right"><B><?php echo $lang['LBL_PHONE1']?></B> <?php echo "(Compulsory)"?></TD>
-	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserMobile" MAXLENGTH=10></TD></TR>
+	              			<TD WIDTH=150 CLASS="data"><INPUT TYPE="text" SIZE=20 STYLE="width:120px;" CLASS="formTextbox" NAME="newuserMobile" id="newuserMobile" MAXLENGTH=10></TD></TR>
 						<TR VALIGN="top" >
 						<TD WIDTH=100 CLASS="data" STYLE="text-align:right"><B><?php echo $lang['LBL_USERTYPE']?></B></TD>
 	              			<TD WIDTH=150 CLASS="data">
